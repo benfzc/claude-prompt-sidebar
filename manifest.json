@@ -9,7 +9,7 @@
         "scripting"
     ],
     "host_permissions": [
-        "https://*.claude.ai/*"
+        "https://claude.ai/*"
     ],
     "action": {
         "default_icon": {
@@ -24,7 +24,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.claude.ai/*"
+                "https://claude.ai/*"
             ],
             "css": [
                 "styles.css"
