@@ -34,7 +34,7 @@ function createSidebar() {
     sidebar.innerHTML = `
         <div class="sidebar-header">
             <h3>提示詞管理</h3>
-            <button id="toggle-sidebar">←</button>
+            <button id="toggle-sidebar"></button>
         </div>
         <div class="prompt-list"></div>
         <div class="sidebar-footer">
@@ -64,7 +64,7 @@ function renderPrompts(prompts) {
     promptList.innerHTML = prompts.map(prompt => `
         <div class="prompt-item" data-id="${prompt.id}">
             <h4>${prompt.title}</h4>
-            <button class="use-prompt">使用</button>
+            <button class="use-prompt"></button>
         </div>
     `).join('');
 }

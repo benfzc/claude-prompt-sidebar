@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 #claude-prompt-sidebar.collapsed {
@@ -18,16 +19,18 @@
 
 .sidebar-header {
     padding: 15px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #f8f9fa;
 }
 
 .sidebar-header h3 {
     margin: 0;
     font-size: 16px;
-    color: #333;
+    color: #2c3e50;
+    font-weight: 600;
 }
 
 .prompt-list {
@@ -37,55 +40,107 @@
 }
 
 .prompt-item {
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     margin-bottom: 10px;
-    background: #f9f9f9;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .prompt-item h4 {
-    margin: 0 0 8px 0;
+    margin: 0;
     font-size: 14px;
-    color: #333;
+    color: #2c3e50;
+    flex: 1;
 }
 
 .sidebar-footer {
     padding: 15px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
 }
 
+/* 按鈕樣式 */
 button {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
     border-radius: 4px;
     background: #fff;
     cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #374151;
+    transition: all 0.2s ease;
+    font-weight: 500;
 }
 
 button:hover {
-    background: #f0f0f0;
+    background: #f3f4f6;
+    border-color: #9ca3af;
 }
 
+/* 使用按鈕 */
+.use-prompt {
+    background: #3b82f6;
+    border-color: #2563eb;
+    padding: 4px 12px;
+    min-width: 60px;
+    color: white;
+}
+
+.use-prompt:hover {
+    background: #2563eb;
+    border-color: #1d4ed8;
+}
+
+.use-prompt::before {
+    content: "使用";
+}
+
+/* 新增按鈕 */
 #add-prompt {
     width: 100%;
     padding: 8px;
-    background: #007bff;
+    background: #10b981;
     color: white;
     border: none;
+    font-weight: 500;
+}
+
+#add-prompt::before {
+    content: "+ ";
 }
 
 #add-prompt:hover {
-    background: #0056b3;
+    background: #059669;
 }
 
+/* 收合按鈕 */
 #toggle-sidebar {
-    padding: 5px 8px;
+    padding: 6px;
     font-size: 16px;
     line-height: 1;
+    border: none;
+    background: transparent;
+    color: #4b5563;
+    min-width: 30px;
 }
 
-/* 確保側邊欄在收合時仍可見一小部分 */
-#claude-prompt-sidebar.collapsed #toggle-sidebar {
-    transform: rotate(180deg);
+#toggle-sidebar::before {
+    content: "⟨";
+}
+
+#claude-prompt-sidebar.collapsed #toggle-sidebar::before {
+    content: "⟩";
+}
+
+#toggle-sidebar:hover {
+    background: #e5e7eb;
+    color: #1f2937;
 }
