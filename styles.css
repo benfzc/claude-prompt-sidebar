@@ -40,21 +40,86 @@
 }
 
 .prompt-item {
-    padding: 12px;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     margin-bottom: 10px;
     background: #ffffff;
+}
+
+.prompt-header {
+    padding: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    position: relative;
 }
 
-.prompt-item h4 {
+.prompt-header:hover {
+    background: #f8fafc;
+}
+
+.prompt-header::after {
+    content: "▼";
+    font-size: 12px;
+    color: #64748b;
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+}
+
+.prompt-header:hover::after {
+    color: #3b82f6;
+}
+
+.prompt-content:not(.hidden)+.prompt-header::after {
+    transform: rotate(180deg);
+}
+
+.prompt-header h4 {
     margin: 0;
     font-size: 14px;
     color: #2c3e50;
     flex: 1;
+}
+
+.prompt-content {
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    background: #f8fafc;
+}
+
+.prompt-content.hidden {
+    display: none;
+}
+
+.prompt-content p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4b5563;
+    white-space: pre-wrap;
+}
+
+.prompt-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.insert-prompt {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.insert-prompt:hover {
+    background: #2563eb;
 }
 
 .sidebar-footer {
@@ -83,24 +148,6 @@ button {
 button:hover {
     background: #f3f4f6;
     border-color: #9ca3af;
-}
-
-/* 使用按鈕 */
-.use-prompt {
-    background: #3b82f6;
-    border-color: #2563eb;
-    padding: 4px 12px;
-    min-width: 60px;
-    color: white;
-}
-
-.use-prompt:hover {
-    background: #2563eb;
-    border-color: #1d4ed8;
-}
-
-.use-prompt::before {
-    content: "使用";
 }
 
 /* 新增按鈕 */

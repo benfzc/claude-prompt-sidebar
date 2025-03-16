@@ -106,10 +106,36 @@ function renderPrompts(prompts) {
 
     promptList.innerHTML = prompts.map(prompt => `
         <div class="prompt-item" data-id="${prompt.id}">
-            <h4>${prompt.title}</h4>
-            <button class="use-prompt"></button>
+            <div class="prompt-header" data-id="${prompt.id}">
+                <h4>${prompt.title}</h4>
+            </div>
+            <div class="prompt-content hidden">
+                <p>${prompt.content}</p>
+                <div class="prompt-actions">
+                    <button class="insert-prompt">插入提示詞</button>
+                </div>
+            </div>
         </div>
     `).join('');
+
+    // 添加點擊事件處理
+    promptList.querySelectorAll('.prompt-header').forEach(header => {
+        header.addEventListener('click', (e) => {
+            const promptId = header.dataset.id;
+            const content = header.parentElement.querySelector('.prompt-content');
+            const allContents = promptList.querySelectorAll('.prompt-content');
+
+            // 收合其他所有已展開的內容
+            allContents.forEach(c => {
+                if (c !== content) {
+                    c.classList.add('hidden');
+                }
+            });
+
+            // 切換當前內容的顯示狀態
+            content.classList.toggle('hidden');
+        });
+    });
 }
 
 // Insert prompt into Claude's input
@@ -167,8 +193,8 @@ async function initSidebar() {
 
     // Event listeners
     sidebar.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('use-prompt')) {
-            console.log('點擊使用按鈕');
+        if (e.target.classList.contains('insert-prompt')) {
+            console.log('點擊插入按鈕');
             const promptId = parseInt(e.target.closest('.prompt-item').dataset.id);
             console.log('提示詞 ID:', promptId);
             const prompts = await loadPrompts();
