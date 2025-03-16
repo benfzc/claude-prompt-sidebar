@@ -112,6 +112,7 @@ function renderPrompts(prompts) {
             <div class="prompt-content hidden">
                 <p>${prompt.content}</p>
                 <div class="prompt-actions">
+                    <button class="delete-prompt">刪除</button>
                     <button class="insert-prompt">插入提示詞</button>
                 </div>
             </div>
@@ -136,6 +137,22 @@ function renderPrompts(prompts) {
             content.classList.toggle('hidden');
         });
     });
+}
+
+// Delete prompt
+async function deletePrompt(promptId) {
+    try {
+        const prompts = await loadPrompts();
+        const updatedPrompts = prompts.filter(p => p.id !== promptId);
+        if (await savePrompts(updatedPrompts)) {
+            renderPrompts(updatedPrompts);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error deleting prompt:', error);
+        return false;
+    }
 }
 
 // Insert prompt into Claude's input
@@ -204,6 +221,15 @@ async function initSidebar() {
                 insertPrompt(prompt.content);
             } else {
                 console.error('找不到對應的提示詞');
+            }
+        } else if (e.target.classList.contains('delete-prompt')) {
+            const promptId = parseInt(e.target.closest('.prompt-item').dataset.id);
+            if (confirm('確定要刪除這個提示詞嗎？')) {
+                if (await deletePrompt(promptId)) {
+                    console.log('提示詞已刪除');
+                } else {
+                    alert('刪除失敗，請重試');
+                }
             }
         } else if (e.target.id === 'toggle-sidebar') {
             toggleSidebar();

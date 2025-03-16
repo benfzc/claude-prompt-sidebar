@@ -122,6 +122,21 @@
     background: #2563eb;
 }
 
+.delete-prompt {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.delete-prompt:hover {
+    background: #dc2626;
+}
+
 .sidebar-footer {
     padding: 15px;
     border-top: 1px solid #e0e0e0;
