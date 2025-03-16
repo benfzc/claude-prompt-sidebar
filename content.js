@@ -1,0 +1,101 @@
+// Constants
+const SIDEBAR_ID = 'claude-prompt-sidebar';
+const STORAGE_KEY = 'claude_prompts';
+
+// Default prompts for testing
+const DEFAULT_PROMPTS = [
+    {
+        id: 1,
+        title: 'Linux 驅動開發',
+        content: 'You are an embedded Linux expert. Help me with driver development.'
+    },
+    {
+        id: 2,
+        title: 'Linux 核心除錯',
+        content: 'Help me debug Linux kernel issues. Focus on practical solutions.'
+    },
+    {
+        id: 3,
+        title: 'BSP 開發',
+        content: 'Assist with BSP development for embedded Linux systems.'
+    }
+];
+
+// Create and inject sidebar
+function createSidebar() {
+    const sidebar = document.createElement('div');
+    sidebar.id = SIDEBAR_ID;
+    sidebar.innerHTML = `
+        <div class="sidebar-header">
+            <h3>提示詞管理</h3>
+            <button id="toggle-sidebar">←</button>
+        </div>
+        <div class="prompt-list"></div>
+        <div class="sidebar-footer">
+            <button id="add-prompt">新增提示詞</button>
+        </div>
+    `;
+    document.body.appendChild(sidebar);
+    return sidebar;
+}
+
+// Load prompts from storage
+async function loadPrompts() {
+    try {
+        const result = await chrome.storage.local.get(STORAGE_KEY);
+        return result[STORAGE_KEY] || DEFAULT_PROMPTS;
+    } catch (error) {
+        console.error('Error loading prompts:', error);
+        return DEFAULT_PROMPTS;
+    }
+}
+
+// Render prompts in sidebar
+function renderPrompts(prompts) {
+    const promptList = document.querySelector(`#${SIDEBAR_ID} .prompt-list`);
+    promptList.innerHTML = prompts.map(prompt => `
+        <div class="prompt-item" data-id="${prompt.id}">
+            <h4>${prompt.title}</h4>
+            <button class="use-prompt">使用</button>
+        </div>
+    `).join('');
+}
+
+// Insert prompt into Claude's textarea
+function insertPrompt(promptContent) {
+    const textarea = document.querySelector('textarea[placeholder*="Message"]');
+    if (textarea) {
+        textarea.value = promptContent;
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
+// Initialize sidebar
+async function initSidebar() {
+    const sidebar = createSidebar();
+    const prompts = await loadPrompts();
+    renderPrompts(prompts);
+
+    // Event listeners
+    sidebar.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('use-prompt')) {
+            const promptId = parseInt(e.target.closest('.prompt-item').dataset.id);
+            const prompts = await loadPrompts();
+            const prompt = prompts.find(p => p.id === promptId);
+            if (prompt) {
+                insertPrompt(prompt.content);
+            }
+        }
+    });
+
+    document.getElementById('toggle-sidebar').addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+}
+
+// Wait for page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebar);
+} else {
+    initSidebar();
+} 
