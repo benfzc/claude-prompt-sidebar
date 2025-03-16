@@ -40,6 +40,17 @@ function createSidebar() {
         <div class="sidebar-footer">
             <button id="add-prompt">新增提示詞</button>
         </div>
+        <div id="prompt-form" class="prompt-form hidden">
+            <div class="form-content">
+                <h4>新增提示詞</h4>
+                <input type="text" id="prompt-title" placeholder="提示詞名稱" />
+                <textarea id="prompt-content" placeholder="提示詞內容"></textarea>
+                <div class="form-buttons">
+                    <button id="save-prompt">儲存</button>
+                    <button id="cancel-prompt">取消</button>
+                </div>
+            </div>
+        </div>
     `;
     document.body.appendChild(sidebar);
     return sidebar;
@@ -53,6 +64,38 @@ async function loadPrompts() {
     } catch (error) {
         console.error('Error loading prompts:', error);
         return [];
+    }
+}
+
+// Save prompts to storage
+async function savePrompts(prompts) {
+    try {
+        await chrome.storage.local.set({ [STORAGE_KEY]: prompts });
+        return true;
+    } catch (error) {
+        console.error('Error saving prompts:', error);
+        return false;
+    }
+}
+
+// Generate unique ID for new prompt
+function generateId(prompts) {
+    if (prompts.length === 0) return 1;
+    return Math.max(...prompts.map(p => p.id)) + 1;
+}
+
+// Show/hide prompt form
+function togglePromptForm(show = true) {
+    const form = document.getElementById('prompt-form');
+    if (form) {
+        form.classList.toggle('hidden', !show);
+        if (show) {
+            document.getElementById('prompt-title').focus();
+        } else {
+            // Clear form
+            document.getElementById('prompt-title').value = '';
+            document.getElementById('prompt-content').value = '';
+        }
     }
 }
 
@@ -138,6 +181,36 @@ async function initSidebar() {
             }
         } else if (e.target.id === 'toggle-sidebar') {
             toggleSidebar();
+        } else if (e.target.id === 'add-prompt') {
+            togglePromptForm(true);
+        } else if (e.target.id === 'cancel-prompt') {
+            togglePromptForm(false);
+        } else if (e.target.id === 'save-prompt') {
+            const titleInput = document.getElementById('prompt-title');
+            const contentInput = document.getElementById('prompt-content');
+
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+
+            if (!title || !content) {
+                alert('請填寫提示詞名稱和內容');
+                return;
+            }
+
+            const prompts = await loadPrompts();
+            const newPrompt = {
+                id: generateId(prompts),
+                title,
+                content
+            };
+
+            prompts.push(newPrompt);
+            if (await savePrompts(prompts)) {
+                renderPrompts(prompts);
+                togglePromptForm(false);
+            } else {
+                alert('儲存失敗，請重試');
+            }
         }
     });
 }
