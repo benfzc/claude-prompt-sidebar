@@ -69,12 +69,42 @@ function renderPrompts(prompts) {
     `).join('');
 }
 
-// Insert prompt into Claude's textarea
+// Insert prompt into Claude's input
 function insertPrompt(promptContent) {
-    const textarea = document.querySelector('textarea[placeholder*="Message"]');
-    if (textarea) {
-        textarea.value = promptContent;
-        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    // 尋找 contenteditable div
+    const editorDiv = document.querySelector('div[contenteditable="true"].ProseMirror');
+    if (!editorDiv) {
+        console.error('找不到 Claude 的輸入框');
+        return;
+    }
+
+    console.log('找到輸入框');
+
+    // 清除現有內容
+    editorDiv.innerHTML = '';
+
+    // 創建新的段落元素
+    const p = document.createElement('p');
+    p.textContent = promptContent;
+
+    // 插入段落
+    editorDiv.appendChild(p);
+    console.log('設定提示詞內容：', promptContent);
+
+    // 觸發輸入事件
+    editorDiv.dispatchEvent(new InputEvent('input', {
+        bubbles: true,
+        cancelable: true,
+    }));
+
+    // 聚焦輸入框
+    editorDiv.focus();
+
+    // 確認內容是否已更新
+    if (editorDiv.textContent.trim() !== promptContent) {
+        console.error('提示詞內容設定失敗');
+        console.log('預期值：', promptContent);
+        console.log('實際值：', editorDiv.textContent);
     }
 }
 
@@ -95,11 +125,16 @@ async function initSidebar() {
     // Event listeners
     sidebar.addEventListener('click', async (e) => {
         if (e.target.classList.contains('use-prompt')) {
+            console.log('點擊使用按鈕');
             const promptId = parseInt(e.target.closest('.prompt-item').dataset.id);
+            console.log('提示詞 ID:', promptId);
             const prompts = await loadPrompts();
             const prompt = prompts.find(p => p.id === promptId);
             if (prompt) {
+                console.log('找到提示詞：', prompt);
                 insertPrompt(prompt.content);
+            } else {
+                console.error('找不到對應的提示詞');
             }
         } else if (e.target.id === 'toggle-sidebar') {
             toggleSidebar();
