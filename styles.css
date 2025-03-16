@@ -84,3 +84,8 @@ button:hover {
     font-size: 16px;
     line-height: 1;
 }
+
+/* 確保側邊欄在收合時仍可見一小部分 */
+#claude-prompt-sidebar.collapsed #toggle-sidebar {
+    transform: rotate(180deg);
+}

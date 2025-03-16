@@ -22,4 +22,32 @@ chrome.runtime.onInstalled.addListener(async () => {
     if (!data.claude_prompts) {
         await chrome.storage.local.set({ 'claude_prompts': DEFAULT_PROMPTS });
     }
+});
+
+// Handle extension icon click
+chrome.action.onClicked.addListener(async (tab) => {
+    if (tab.url.match(/^https:\/\/claude\.ai\/.*/)) {
+        try {
+            // 確保腳本已注入
+            await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                function: () => {
+                    // 檢查側邊欄是否存在
+                    const sidebar = document.getElementById('claude-prompt-sidebar');
+                    if (!sidebar) {
+                        // 如果側邊欄不存在，重新初始化
+                        if (typeof initSidebar === 'function') {
+                            initSidebar();
+                        }
+                    }
+                    // 切換側邊欄顯示狀態
+                    if (typeof toggleSidebar === 'function') {
+                        toggleSidebar();
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error toggling sidebar:', error);
+        }
+    }
 }); 

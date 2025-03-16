@@ -23,8 +23,14 @@ const DEFAULT_PROMPTS = [
 
 // Create and inject sidebar
 function createSidebar() {
+    const existingSidebar = document.getElementById(SIDEBAR_ID);
+    if (existingSidebar) {
+        return existingSidebar;
+    }
+
     const sidebar = document.createElement('div');
     sidebar.id = SIDEBAR_ID;
+    sidebar.classList.add('collapsed'); // Start collapsed
     sidebar.innerHTML = `
         <div class="sidebar-header">
             <h3>提示詞管理</h3>
@@ -43,16 +49,18 @@ function createSidebar() {
 async function loadPrompts() {
     try {
         const result = await chrome.storage.local.get(STORAGE_KEY);
-        return result[STORAGE_KEY] || DEFAULT_PROMPTS;
+        return result[STORAGE_KEY] || [];
     } catch (error) {
         console.error('Error loading prompts:', error);
-        return DEFAULT_PROMPTS;
+        return [];
     }
 }
 
 // Render prompts in sidebar
 function renderPrompts(prompts) {
     const promptList = document.querySelector(`#${SIDEBAR_ID} .prompt-list`);
+    if (!promptList) return;
+
     promptList.innerHTML = prompts.map(prompt => `
         <div class="prompt-item" data-id="${prompt.id}">
             <h4>${prompt.title}</h4>
@@ -67,6 +75,14 @@ function insertPrompt(promptContent) {
     if (textarea) {
         textarea.value = promptContent;
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
+// Toggle sidebar visibility
+function toggleSidebar() {
+    const sidebar = document.getElementById(SIDEBAR_ID);
+    if (sidebar) {
+        sidebar.classList.toggle('collapsed');
     }
 }
 
@@ -85,15 +101,20 @@ async function initSidebar() {
             if (prompt) {
                 insertPrompt(prompt.content);
             }
+        } else if (e.target.id === 'toggle-sidebar') {
+            toggleSidebar();
         }
-    });
-
-    document.getElementById('toggle-sidebar').addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
     });
 }
 
-// Wait for page load
+// Listen for messages from background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "toggleSidebar") {
+        toggleSidebar();
+    }
+});
+
+// Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initSidebar);
 } else {
