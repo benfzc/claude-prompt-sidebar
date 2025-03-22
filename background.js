@@ -36,14 +36,10 @@ chrome.action.onClicked.addListener(async (tab) => {
                     const sidebar = document.getElementById('claude-prompt-sidebar');
                     if (!sidebar) {
                         // 如果側邊欄不存在，重新初始化
-                        if (typeof initSidebar === 'function') {
-                            initSidebar();
-                        }
+                        initSidebar();
                     }
                     // 切換側邊欄顯示狀態
-                    if (typeof toggleSidebar === 'function') {
-                        toggleSidebar();
-                    }
+                    toggleSidebar();
                 }
             });
         } catch (error) {
