@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(async () => {
         },
         {
             id: 3,
-            title: '轉換成淺顯說明',
+            title: '用淺顯方式說明',
             content: '請將以下內容用淺顯易懂的方式解釋，就像在跟完全不懂這個領域的人解釋一樣。請使用生活化的比喻和例子，避免專業術語：'
         }
     ];
