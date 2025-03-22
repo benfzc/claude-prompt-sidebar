@@ -150,6 +150,75 @@
     background: #f8f9fa;
 }
 
+.button-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.button-group button {
+    flex: 1;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+/* 新增按鈕 */
+#add-prompt {
+    background: #10b981;
+}
+
+#add-prompt:hover {
+    background: #059669;
+}
+
+#add-prompt::before {
+    content: "+";
+    font-size: 16px;
+}
+
+/* 匯出按鈕 */
+#export-prompts {
+    background: #3b82f6;
+}
+
+#export-prompts:hover {
+    background: #2563eb;
+}
+
+#export-prompts::before {
+    content: "↓";
+    margin-right: 4px;
+}
+
+/* 匯入按鈕 */
+#import-prompts {
+    background: #8b5cf6;
+}
+
+#import-prompts:hover {
+    background: #7c3aed;
+}
+
+#import-prompts::before {
+    content: "↑";
+    margin-right: 4px;
+}
+
+/* 檔案選擇器 */
+#import-file {
+    display: none;
+    /* 隱藏原生檔案選擇器 */
+}
+
 /* 按鈕樣式 */
 button {
     padding: 6px 12px;
@@ -170,24 +239,6 @@ button {
 button:hover {
     background: #f3f4f6;
     border-color: #9ca3af;
-}
-
-/* 新增按鈕 */
-#add-prompt {
-    width: 100%;
-    padding: 8px;
-    background: #10b981;
-    color: white;
-    border: none;
-    font-weight: 500;
-}
-
-#add-prompt::before {
-    content: "+ ";
-}
-
-#add-prompt:hover {
-    background: #059669;
 }
 
 /* 收合按鈕 */

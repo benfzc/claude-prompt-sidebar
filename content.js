@@ -19,7 +19,12 @@ function createSidebar() {
         </div>
         <div class="prompt-list"></div>
         <div class="sidebar-footer">
-            <button id="add-prompt">新增提示詞</button>
+            <div class="button-group">
+                <button id="add-prompt" title="新增提示詞">新增</button>
+                <button id="export-prompts" title="匯出提示詞">匯出</button>
+                <button id="import-prompts" title="匯入提示詞">匯入</button>
+            </div>
+            <input type="file" id="import-file" accept=".json,.txt">
         </div>
         <div id="prompt-form" class="prompt-form hidden">
             <div class="form-content">
@@ -183,6 +188,72 @@ function toggleSidebar() {
     }
 }
 
+// Export prompts to JSON file
+function exportPrompts(prompts) {
+    const exportData = {
+        version: "1.0",
+        prompts: prompts.map(({ title, content }) => ({ title, content }))
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `claude_prompts_${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+// Import prompts from JSON file
+async function importPrompts(file) {
+    try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+
+        // 基本格式驗證
+        if (!data.version || !Array.isArray(data.prompts)) {
+            throw new Error('無效的提示詞檔案格式');
+        }
+
+        // 驗證每個提示詞的結構
+        const validPrompts = data.prompts.every(p =>
+            typeof p.title === 'string' &&
+            typeof p.content === 'string' &&
+            p.title.trim() !== '' &&
+            p.content.trim() !== ''
+        );
+
+        if (!validPrompts) {
+            throw new Error('提示詞資料格式不正確');
+        }
+
+        // 確認是否要覆蓋現有提示詞
+        if (!confirm('匯入將會覆蓋現有的所有提示詞，確定要繼續嗎？')) {
+            return false;
+        }
+
+        // 為每個匯入的提示詞生成新的 ID
+        const newPrompts = data.prompts.map((p, index) => ({
+            id: index + 1,
+            title: p.title.trim(),
+            content: p.content.trim()
+        }));
+
+        // 直接覆蓋並儲存
+        if (await savePrompts(newPrompts)) {
+            renderPrompts(newPrompts);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error importing prompts:', error);
+        alert(error.message || '匯入失敗，請確認檔案格式正確');
+        return false;
+    }
+}
+
 // Initialize sidebar
 async function initSidebar() {
     const sidebar = createSidebar();
@@ -244,7 +315,32 @@ async function initSidebar() {
             } else {
                 alert('儲存失敗，請重試');
             }
+        } else if (e.target.id === 'export-prompts') {
+            const prompts = await loadPrompts();
+            if (prompts.length === 0) {
+                alert('目前沒有可匯出的提示詞');
+                return;
+            }
+            exportPrompts(prompts);
+        } else if (e.target.id === 'import-prompts') {
+            document.getElementById('import-file').click();
         }
+    });
+
+    // 處理檔案選擇
+    const fileInput = document.getElementById('import-file');
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const fileExt = file.name.split('.').pop().toLowerCase();
+        if (fileExt !== 'json' && fileExt !== 'txt') {
+            alert('請選擇 .txt 或 .json 檔案');
+            return;
+        }
+
+        await importPrompts(file);
+        fileInput.value = ''; // 清除檔案選擇
     });
 }
 
