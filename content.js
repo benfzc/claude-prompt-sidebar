@@ -2,25 +2,6 @@
 const SIDEBAR_ID = 'claude-prompt-sidebar';
 const STORAGE_KEY = 'claude_prompts';
 
-// Default prompts for testing
-const DEFAULT_PROMPTS = [
-    {
-        id: 1,
-        title: 'Linux 驅動開發',
-        content: 'You are an embedded Linux expert. Help me with driver development.'
-    },
-    {
-        id: 2,
-        title: 'Linux 核心除錯',
-        content: 'Help me debug Linux kernel issues. Focus on practical solutions.'
-    },
-    {
-        id: 3,
-        title: 'BSP 開發',
-        content: 'Assist with BSP development for embedded Linux systems.'
-    }
-];
-
 // Create and inject sidebar
 function createSidebar() {
     const existingSidebar = document.getElementById(SIDEBAR_ID);

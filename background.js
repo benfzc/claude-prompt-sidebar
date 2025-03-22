@@ -3,18 +3,18 @@ chrome.runtime.onInstalled.addListener(async () => {
     const DEFAULT_PROMPTS = [
         {
             id: 1,
-            title: 'Linux 驅動開發',
-            content: 'You are an embedded Linux expert. Help me with driver development.'
+            title: '轉換成台灣繁中',
+            content: '請用台灣慣用的繁體中文說明以下內容，使用台灣人習慣的用詞和表達方式。請保留專有名詞的英文原文，例如品牌名稱、技術名詞、縮寫等：'
         },
         {
             id: 2,
-            title: 'Linux 核心除錯',
-            content: 'Help me debug Linux kernel issues. Focus on practical solutions.'
+            title: '翻譯成簡單英文',
+            content: '請將以下內容轉述成簡單清楚的英文，使用常見字詞和簡單句型，避免使用艱深的專業術語：'
         },
         {
             id: 3,
-            title: 'BSP 開發',
-            content: 'Assist with BSP development for embedded Linux systems.'
+            title: '轉換成淺顯說明',
+            content: '請將以下內容用淺顯易懂的方式解釋，就像在跟完全不懂這個領域的人解釋一樣。請使用生活化的比喻和例子，避免專業術語：'
         }
     ];
 
