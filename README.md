@@ -2,6 +2,8 @@
 
 這是一個瀏覽器擴充功能，專門用於管理和快速插入 Claude AI 的提示詞（Prompts）。它提供了一個簡潔的側邊欄介面，讓您可以輕鬆管理常用的提示詞。支援 Chrome 和 Edge 瀏覽器。
 
+![使用者介面](https://github.com/user-attachments/assets/b23b82df-efbe-4d33-8ca9-77b2d379a75f)
+
 ## 功能特色
 
 - 提示詞管理：新增、刪除和組織您的提示詞
