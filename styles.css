@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 300px;
+    width: 330px;
     height: 100vh;
     background: #ffffff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -14,16 +14,17 @@
 }
 
 #claude-prompt-sidebar.collapsed {
-    transform: translateX(270px);
+    transform: translateX(310px);
 }
 
 .sidebar-header {
-    padding: 15px;
+    padding: 15px 15px 15px 20px;
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #f8f9fa;
+    position: relative;
 }
 
 .sidebar-header h3 {
@@ -36,7 +37,8 @@
 .prompt-list {
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
+    padding: 10px 10px 10px 20px;
+    position: relative;
 }
 
 .prompt-item {
@@ -143,7 +145,7 @@
 }
 
 .sidebar-footer {
-    padding: 15px;
+    padding: 15px 15px 15px 20px;
     border-top: 1px solid #e0e0e0;
     background: #f8f9fa;
 }
@@ -192,33 +194,35 @@ button:hover {
 #toggle-sidebar {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 50vh;
     transform: translateY(-50%);
-    padding: 12px 8px;
-    font-size: 18px;
+    height: 24px;
+    width: 20px;
+    padding: 0;
+    font-size: 14px;
     line-height: 1;
-    border: 1px solid #e5e7eb;
-    border-radius: 0 4px 4px 0;
-    background: #f8fafc;
+    border: none;
+    background: transparent;
     color: #4b5563;
-    min-width: 30px;
     cursor: pointer;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
-    z-index: 1001;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
 }
 
 #toggle-sidebar:hover {
-    background: #f1f5f9;
     color: #1f2937;
 }
 
 #toggle-sidebar::before {
     content: "⟩";
-    display: block;
 }
 
 #claude-prompt-sidebar.collapsed #toggle-sidebar {
-    border-right: none;
+    right: 310px;
+    left: auto;
 }
 
 #claude-prompt-sidebar.collapsed #toggle-sidebar::before {
