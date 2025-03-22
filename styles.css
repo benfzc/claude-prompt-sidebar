@@ -14,7 +14,7 @@
 }
 
 #claude-prompt-sidebar.collapsed {
-    transform: translateX(290px);
+    transform: translateX(270px);
 }
 
 .sidebar-header {
@@ -190,26 +190,39 @@ button:hover {
 
 /* 收合按鈕 */
 #toggle-sidebar {
-    padding: 6px;
-    font-size: 16px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 12px 8px;
+    font-size: 18px;
     line-height: 1;
-    border: none;
-    background: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 4px 4px 0;
+    background: #f8fafc;
     color: #4b5563;
     min-width: 30px;
-}
-
-#toggle-sidebar::before {
-    content: "⟨";
-}
-
-#claude-prompt-sidebar.collapsed #toggle-sidebar::before {
-    content: "⟩";
+    cursor: pointer;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    z-index: 1001;
 }
 
 #toggle-sidebar:hover {
-    background: #e5e7eb;
+    background: #f1f5f9;
     color: #1f2937;
+}
+
+#toggle-sidebar::before {
+    content: "⟩";
+    display: block;
+}
+
+#claude-prompt-sidebar.collapsed #toggle-sidebar {
+    border-right: none;
+}
+
+#claude-prompt-sidebar.collapsed #toggle-sidebar::before {
+    content: "⟨";
 }
 
 /* 新增提示詞表單 */
