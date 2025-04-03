@@ -1,6 +1,7 @@
 # Claude 提示詞剪貼簿（瀏覽器擴充功能）
 
 這是一個瀏覽器擴充功能，專門用於管理和快速插入 Claude AI 的提示詞（Prompts）。它提供了一個簡潔的側邊欄介面，讓您可以輕鬆管理常用的提示詞。支援 Chrome 和 Edge 瀏覽器。
+[Crome 商店下載](https://chromewebstore.google.com/detail/claude-%E6%8F%90%E7%A4%BA%E8%A9%9E%E5%89%AA%E8%B2%BC%E7%B0%BF/kdllgcbjjcjomcpcmjhnobffoaadeekp)
 
 ![使用者介面](https://github.com/user-attachments/assets/b23b82df-efbe-4d33-8ca9-77b2d379a75f)
 
